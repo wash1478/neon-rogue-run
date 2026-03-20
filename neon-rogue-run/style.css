@@ -1,0 +1,8 @@
+html,body{height:100%;margin:0;background:#070712;color:#e6f0ff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+#game-container{position:relative;height:100vh;display:flex;align-items:center;justify-content:center}
+canvas{background:linear-gradient(180deg,#001 0%,#002 100%);width:100%;height:100%;touch-action:none}
+#hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:center}
+#controls button,#save-load button{font-size:18px;padding:10px;margin:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:8px}
+#controls{display:flex;align-items:center}
+#score{font-weight:600}
+@media (min-width:700px){#controls button{font-size:20px;padding:12px}}
