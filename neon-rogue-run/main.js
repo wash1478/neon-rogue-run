@@ -3,6 +3,20 @@ const ctx = canvas.getContext('2d');
 let W = canvas.width = innerWidth; let H = canvas.height = innerHeight;
 window.addEventListener('resize',()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight});
 
+// image assets
+const playerImg = new Image(); playerImg.src = 'assets/player.svg';
+const enemyImg = new Image(); enemyImg.src = 'assets/enemy.svg';
+
+// audio: simple beep generator
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function beep(freq, duration=0.08){
+  const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+  o.type='sine'; o.frequency.value = freq; g.gain.value = 0.12;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+  o.stop(audioCtx.currentTime + duration);
+}
+
 // simple player
 const player = {x:100,y:0,w:32,h:48,vy:0,onGround:false,dir:1,score:0};
 const gravity = 0.8;
@@ -46,9 +60,9 @@ function update(){
   // movement
   if(keys.left){player.x -= 4; player.dir=-1}
   if(keys.right){player.x +=4; player.dir=1}
-  if(keys.jump && player.onGround){player.vy = -14; player.onGround=false}
+  if(keys.jump && player.onGround){player.vy = -14; player.onGround=false; beep(600)}
   // shoot
-  if(keys.shoot){ if(bullets.length<3){bullets.push({x:player.x+player.w/2,y:player.y+20,vx:10*player.dir})} keys.shoot=false }
+  if(keys.shoot){ if(bullets.length<3){bullets.push({x:player.x+player.w/2,y:player.y+20,vx:10*player.dir}); beep(950)} keys.shoot=false }
   // physics
   player.vy += gravity; player.y += player.vy;
   if(player.y + player.h > H-40){player.y = H-40 - player.h; player.vy = 0; player.onGround = true}
@@ -59,10 +73,10 @@ function update(){
   // collisions
   enemies.forEach((e,ei)=>{
     bullets.forEach((b,bi)=>{
-      if(b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h){ enemies.splice(ei,1); bullets.splice(bi,1); player.score += 10 }
+      if(b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h){ enemies.splice(ei,1); bullets.splice(bi,1); player.score += 10; beep(400)}
     })
     // player hit
-    if(player.x+player.w>e.x && player.x<e.x+e.w && player.y+player.h>e.y && player.y<e.y+e.h){ player.score = Math.max(0, player.score-20); enemies.splice(ei,1) }
+    if(player.x+player.w>e.x && player.x<e.x+e.w && player.y+player.h>e.y && player.y<e.y+e.h){ player.score = Math.max(0, player.score-20); enemies.splice(ei,1); beep(120)}
   })
 }
 
@@ -71,11 +85,11 @@ function draw(){
   // ground
   ctx.fillStyle='#052'; ctx.fillRect(0,H-40,W,40);
   // player
-  ctx.fillStyle='#0ff'; ctx.fillRect(player.x,player.y,player.w,player.h);
+  if(playerImg.complete) ctx.drawImage(playerImg, player.x, player.y, player.w, player.h); else { ctx.fillStyle='#0ff'; ctx.fillRect(player.x,player.y,player.w,player.h)}
   // bullets
   ctx.fillStyle='#ff5'; bullets.forEach(b=>ctx.fillRect(b.x,b.y,8,4));
   // enemies
-  ctx.fillStyle='#f66'; enemies.forEach(e=>ctx.fillRect(e.x,e.y,e.w,e.h));
+  enemies.forEach(e=>{ if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } })
   // HUD
   document.getElementById('score').textContent = 'Score: '+player.score;
 }
