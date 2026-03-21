@@ -31,13 +31,24 @@ function spawnEnemy(type='grunt'){
     enemies.push({x:W+50,y:H-80,w:36,h:36, vx: - (level.enemySpeedBase + Math.random()*1), hp:1, type:'grunt'});
   } else if(type==='charger'){
     enemies.push({x:W+50,y:H-100,w:44,h:44, vx: - (level.enemySpeedBase+2 + Math.random()*1.5), hp:2, type:'charger'});
+  } else if(type==='boss'){
+    enemies.push({x:W+200,y:H-160,w:120,h:120, vx:-0.6, hp:80, type:'boss', patternState:0, lastShot:0});
   }
 }
 setInterval(()=>{
   // spawn according to wave
-  const t = Math.random() < 0.7 ? 'grunt' : 'charger';
+  // increase chance of harder enemies as wave grows
+  const r=Math.random();
+  const t = r < 0.6 ? 'grunt' : (r<0.9? 'charger' : 'grunt');
   spawnEnemy(t);
-}, level.spawnInterval);
+}, Math.max(600, level.spawnInterval - (level.wave*40)));
+
+// boss spawn every 6 waves
+setInterval(()=>{
+  if(level.wave>0 && level.wave % 6 === 0 && !enemies.some(e=>e.type==='boss')){
+    spawnEnemy('boss');
+  }
+}, 5000);
 
 // joystick controls
 const joyBase = document.getElementById('joystick');
@@ -98,7 +109,10 @@ function update(){
     for(let bi=bullets.length-1; bi>=0; bi--){ const b = bullets[bi];
       if(b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h){
         e.hp = (e.hp||1)-1; bullets.splice(bi,1);
-        if(e.hp<=0){ player.score += (e.type==='charger'?20:10); dropPowerup(e.x,e.y); enemies.splice(ei,1); beep(400) }
+        spawnParticles(b.x,b.y,6,'#ffb');
+        if(e.hp<=0){ player.score += (e.type==='charger'?20:(e.type==='boss'?500:10)); if(e.type!=='boss') dropPowerup(e.x,e.y); spawnParticles(e.x+e.w/2,e.y+e.h/2,32,'#f66'); beep(400); if(e.type==='boss'){ spawnParticles(e.x+60,e.y+60,80,'#f90'); }
+          enemies.splice(ei,1);
+        }
       }
     }
     // player hit
@@ -107,13 +121,20 @@ function update(){
         playerState.lives -= 1; playerState.invulnerableUntil = Date.now() + 1200; beep(120);
         // knockback
         player.x = Math.max(20, player.x - 40);
-        enemies.splice(ei,1);
+        if(e.type!=='boss') enemies.splice(ei,1);
+        // big hit effect
+        spawnParticles(player.x+player.w/2, player.y+player.h/2, 30, '#fff');
       }
     }
   }
 }
 
 // draw updated to show powerups & lives
+const particles = [];
+function spawnParticles(x,y,count,color){ for(let i=0;i<count;i++){ particles.push({x,y,vx:(Math.random()-0.5)*6, vy:(Math.random()-0.8)*6, life:60+Math.random()*30, color}); } }
+
+function updateParticles(){ for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--; if(p.life<=0) particles.splice(i,1); }}
+
 function draw(){
   ctx.clearRect(0,0,W,H);
   // ground
@@ -123,12 +144,17 @@ function draw(){
   // bullets
   ctx.fillStyle='#ff5'; bullets.forEach(b=>ctx.fillRect(b.x,b.y,8,4));
   // enemies
-  enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
+  enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(e.type==='boss'){ ctx.fillStyle='#f90'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#000'; ctx.fillText('BOSS', e.x+8, e.y+20);} else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
+  // particles
+  particles.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,3,3); });
   // HUD
   document.getElementById('score').textContent = 'Score: '+player.score;
   // lives
   ctx.fillStyle='#fff'; ctx.font='16px sans-serif'; ctx.fillText('Lives: '+playerState.lives, 12, 28);
 }
+
+function loop(){ update(); updateParticles(); draw(); requestAnimationFrame(loop) }
+loop();
 
 function draw(){
   ctx.clearRect(0,0,W,H);
