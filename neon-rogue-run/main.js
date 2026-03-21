@@ -144,5 +144,21 @@ function draw(){
   document.getElementById('score').textContent = 'Score: '+player.score;
 }
 
+// high score utilities
+function saveHighScore(name, score){ const list = JSON.parse(localStorage.getItem('neon_highscores')||'[]'); list.push({name,score,date:new Date().toISOString()}); list.sort((a,b)=>b.score-a.score); localStorage.setItem('neon_highscores', JSON.stringify(list.slice(0,10))); }
+function showHighScores(){ const list = JSON.parse(localStorage.getItem('neon_highscores')||'[]'); const el = document.getElementById('highscore-list'); el.innerHTML = list.map((s,i)=>`<div>${i+1}. ${s.name} - ${s.score}</div>`).join('') || '<div>(no scores)</div>'; document.getElementById('highscore-modal').style.display='block'; }
+function clearHighScores(){ localStorage.removeItem('neon_highscores'); showHighScores(); }
+
+document.getElementById('highscores').addEventListener('click', showHighScores);
+document.getElementById('close-scores').addEventListener('click', ()=>document.getElementById('highscore-modal').style.display='none');
+document.getElementById('clear-scores').addEventListener('click', clearHighScores);
+
+// export/import
+function exportSave(){ const raw = localStorage.getItem('neon_rogue_save')||''; const blob = new Blob([raw],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='neon_rogue_save.json'; a.click(); URL.revokeObjectURL(url); }
+function importSaveFile(){ const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json'; inp.onchange = e=>{ const f=e.target.files[0]; const r=new FileReader(); r.onload=()=>{ localStorage.setItem('neon_rogue_save', r.result); alert('Imported'); }; r.readAsText(f); }; inp.click(); }
+
+// register service worker
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').catch(()=>{}); }
+
 function loop(){ update(); draw(); requestAnimationFrame(loop) }
 loop();
