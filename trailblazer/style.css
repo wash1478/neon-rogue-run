@@ -1,0 +1,9 @@
+html,body{height:100%;margin:0;background:#0a0b0f;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+#game-container{position:relative;height:100vh}
+canvas{width:100%;height:100%;display:block;background:linear-gradient(#7ec8ff,#1b3a6b)}
+#hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:center}
+#controls{display:flex;align-items:center}
+#joystick{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);position:relative;margin-right:8px;}
+#stick{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);position:absolute;left:23px;top:23px}
+#action-buttons{display:flex;flex-direction:column}
+button{font-size:18px;padding:10px;margin:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:8px}
