@@ -25,10 +25,19 @@ const keys = {left:false,right:false,jump:false,shoot:false};
 // bullets and enemies
 const bullets = []; const enemies = [];
 
-function spawnEnemy(){
-  enemies.push({x:W+50,y:H-80,w:36,h:36, vx: -2 - Math.random()*2});
+let level = {wave:1, spawnInterval:2000, enemySpeedBase:2, difficulty:'normal'};
+function spawnEnemy(type='grunt'){
+  if(type==='grunt'){
+    enemies.push({x:W+50,y:H-80,w:36,h:36, vx: - (level.enemySpeedBase + Math.random()*1), hp:1, type:'grunt'});
+  } else if(type==='charger'){
+    enemies.push({x:W+50,y:H-100,w:44,h:44, vx: - (level.enemySpeedBase+2 + Math.random()*1.5), hp:2, type:'charger'});
+  }
 }
-setInterval(spawnEnemy,2000);
+setInterval(()=>{
+  // spawn according to wave
+  const t = Math.random() < 0.7 ? 'grunt' : 'charger';
+  spawnEnemy(t);
+}, level.spawnInterval);
 
 // joystick controls
 const joyBase = document.getElementById('joystick');
@@ -41,6 +50,16 @@ joyBase.addEventListener('touchmove',e=>{ if(!dragging) return; e.preventDefault
 joyBase.addEventListener('touchend',e=>{ dragging=false; resetStick(); });
 // action buttons
 ['jump','shoot'].forEach(id=>{ const btn=document.getElementById(id); btn.addEventListener('touchstart',e=>{e.preventDefault(); keys[id]=true}); btn.addEventListener('touchend',e=>{e.preventDefault(); keys[id]=false}); btn.addEventListener('mousedown',e=>{keys[id]=true}); btn.addEventListener('mouseup',e=>{keys[id]=false}); });
+
+// player health and powerups
+let playerState = {lives:3, invulnerableUntil:0, powerups:{doubleShot:false, speed:false}};
+let powerupTimeouts = {};
+
+function grantPowerup(name, seconds){ playerState.powerups[name]=true; clearTimeout(powerupTimeouts[name]); powerupTimeouts[name]=setTimeout(()=>{playerState.powerups[name]=false}, seconds*1000); }
+
+function dropPowerup(x,y){ // small chance on enemy death
+  const r=Math.random(); if(r<0.25){ const kind = r<0.1 ? 'health' : (r<0.18?'double':'speed'); enemies.push({x,y,w:18,h:18,type:'power',kind}) }
+}
 
 document.getElementById('save').addEventListener('click',saveGame);
 document.getElementById('load').addEventListener('click',loadGame);
@@ -74,13 +93,41 @@ function update(){
   // enemies
   for(let i=enemies.length-1;i>=0;i--){ enemies[i].x += enemies[i].vx; if(enemies[i].x < -100) enemies.splice(i,1)}
   // collisions
-  enemies.forEach((e,ei)=>{
-    bullets.forEach((b,bi)=>{
-      if(b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h){ enemies.splice(ei,1); bullets.splice(bi,1); player.score += 10; beep(400)}
-    })
+  for(let ei=enemies.length-1; ei>=0; ei--){ const e = enemies[ei];
+    // bullets
+    for(let bi=bullets.length-1; bi>=0; bi--){ const b = bullets[bi];
+      if(b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h){
+        e.hp = (e.hp||1)-1; bullets.splice(bi,1);
+        if(e.hp<=0){ player.score += (e.type==='charger'?20:10); dropPowerup(e.x,e.y); enemies.splice(ei,1); beep(400) }
+      }
+    }
     // player hit
-    if(player.x+player.w>e.x && player.x<e.x+e.w && player.y+player.h>e.y && player.y<e.y+e.h){ player.score = Math.max(0, player.score-20); enemies.splice(ei,1); beep(120)}
-  })
+    if(player.x+player.w>e.x && player.x<e.x+e.w && player.y+player.h>e.y && player.y<e.y+e.h){
+      if(Date.now() > playerState.invulnerableUntil){
+        playerState.lives -= 1; playerState.invulnerableUntil = Date.now() + 1200; beep(120);
+        // knockback
+        player.x = Math.max(20, player.x - 40);
+        enemies.splice(ei,1);
+      }
+    }
+  }
+}
+
+// draw updated to show powerups & lives
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // ground
+  ctx.fillStyle='#052'; ctx.fillRect(0,H-40,W,40);
+  // player
+  if(playerImg.complete) ctx.drawImage(playerImg, player.x, player.y, player.w, player.h); else { ctx.fillStyle='#0ff'; ctx.fillRect(player.x,player.y,player.w,player.h)}
+  // bullets
+  ctx.fillStyle='#ff5'; bullets.forEach(b=>ctx.fillRect(b.x,b.y,8,4));
+  // enemies
+  enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
+  // HUD
+  document.getElementById('score').textContent = 'Score: '+player.score;
+  // lives
+  ctx.fillStyle='#fff'; ctx.font='16px sans-serif'; ctx.fillText('Lives: '+playerState.lives, 12, 28);
 }
 
 function draw(){
