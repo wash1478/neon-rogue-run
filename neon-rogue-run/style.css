@@ -3,7 +3,9 @@ html,body{height:100%;margin:0;background:#070712;color:#e6f0ff;font-family:syst
 canvas{background:linear-gradient(180deg,#001 0%,#002 100%);width:100%;height:100%;touch-action:none}
 #hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:center}
 #controls button,#save-load button{font-size:18px;padding:10px;margin:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:8px}
-#controls{display:flex;align-items:center}
+#controls{position:absolute;bottom:4px;left:8px;right:8px;display:flex;align-items:flex-end;justify-content:space-between}
+.joystick{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);position:relative;margin:4px}
+.stick{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);position:absolute;left:23px;top:23px}
 #score{font-weight:600}
 #joystick{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);position:relative;margin-right:8px;touch-action:none}
 #stick{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);position:absolute;left:23px;top:23px;}
