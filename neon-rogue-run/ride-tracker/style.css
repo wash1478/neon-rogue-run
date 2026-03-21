@@ -1,0 +1,9 @@
+body{font-family:system-ui,Arial;background:#f6f8fa;color:#111;margin:0;padding:20px}
+.wrap{max-width:540px;margin:0 auto}
+label{display:block;margin:8px 0}
+input{padding:8px;margin-left:8px}
+button{padding:10px 14px;margin-top:8px}
+#feed{margin-top:20px}
+.ride{padding:10px;border:1px solid #ddd;margin-bottom:8px;border-radius:6px;background:#fff}
+#animation{position:fixed;left:0;top:0;width:100%;height:100%;}
+.bike{position:absolute;width:120px;height:60px;background:transparent}

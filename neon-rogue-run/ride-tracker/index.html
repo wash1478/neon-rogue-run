@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ride Tracker</title>
+<link rel="stylesheet" href="style.css"></head><body>
+  <div class="wrap">
+    <h1>Ride Tracker</h1>
+    <form id="ride-form">
+      <label>Distance (km): <input type="number" step="0.1" id="distance" required></label>
+      <label>Date: <input type="date" id="date" required></label>
+      <label>Time: <input type="time" id="time" required></label>
+      <button type="submit">Save Ride</button>
+    </form>
+    <div id="feed"></div>
+  </div>
+  <div id="animation" style="pointer-events:none;"></div>
+<script src="script.js"></script>
+</body></html>
