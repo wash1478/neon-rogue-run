@@ -20,7 +20,11 @@ function beep(freq, duration=0.08){
 // simple player
 const player = {x:100,y:0,w:32,h:48,vy:0,onGround:false,dir:1,score:0};
 const gravity = 0.8;
-const keys = {left:false,right:false,jump:false,shoot:false};
+// lives
+let totalLives = 3;
+function remainingLives(){ return Math.max(0, totalLives - 1); }
+let gameOver=false;
+const keys = {up:false,down:false,jump:false,shoot:false};
 
 // bullets and enemies
 const bullets = []; const enemies = [];
@@ -74,17 +78,10 @@ function updateEnemyBehavior(){
   }
 }
 
-// joystick controls
-const joyBase = document.getElementById('joystick');
-const stick = document.getElementById('stick');
-let dragging=false, joyCenter={x:0,y:0}, joyRadius=36;
-function resetStick(){ stick.style.transform='translate(0px,0px)'; keys.left=false; keys.right=false }
-joyBase.addEventListener('touchstart',e=>{ e.preventDefault(); dragging=true; const r=joyBase.getBoundingClientRect(); joyCenter={x:r.left + r.width/2, y:r.top + r.height/2}; });
-joyBase.addEventListener('touchmove',e=>{ if(!dragging) return; e.preventDefault(); const t=e.touches[0]; let dx=t.clientX-joyCenter.x; let dy=t.clientY-joyCenter.y; const dist=Math.sqrt(dx*dx+dy*dy); const max=joyRadius; if(dist>max){ dx=dx*(max/dist); dy=dy*(max/dist); } stick.style.transform=`translate(${dx}px,${dy}px)`; // left/right
- if(dx<-10){ keys.left=true; keys.right=false } else if(dx>10){ keys.right=true; keys.left=false } else { keys.left=false; keys.right=false } });
-joyBase.addEventListener('touchend',e=>{ dragging=false; resetStick(); });
-// action buttons
+// joystick handling moved to joysticks.js which sets window.neonKeys and window.currentAim
 ['jump','shoot'].forEach(id=>{ const btn=document.getElementById(id); btn.addEventListener('touchstart',e=>{e.preventDefault(); keys[id]=true}); btn.addEventListener('touchend',e=>{e.preventDefault(); keys[id]=false}); btn.addEventListener('mousedown',e=>{keys[id]=true}); btn.addEventListener('mouseup',e=>{keys[id]=false}); });
+
+function syncJoystick(){ if(window.neonKeys){ keys.up = !!window.neonKeys.up; keys.down = !!window.neonKeys.down; } }
 
 // player health and powerups
 let playerState = {lives:3, invulnerableUntil:0, powerups:{doubleShot:false, speed:false}};
@@ -114,12 +111,11 @@ function loadGame(){
 }
 
 function update(){
-  // movement
-  if(keys.left){player.x -= 4; player.dir=-1}
-  if(keys.right){player.x +=4; player.dir=1}
-  if(keys.jump && player.onGround){player.vy = -14; player.onGround=false; beep(600)}
-  // shoot
-  if(keys.shoot){ if(bullets.length<3){bullets.push({x:player.x+player.w/2,y:player.y+20,vx:10*player.dir}); beep(950)} keys.shoot=false }
+  // movement vertical float via joystick
+  syncJoystick(); if(keys.up){ player.y = Math.max(20, player.y - 4) } if(keys.down){ player.y = Math.min(H-80, player.y + 4) }
+  if(keys.jump && player.onGround){ player.vy = -14; player.onGround=false; beep(600) }
+  // shoot using aim vector
+  if(keys.shoot){ const aim = window.currentAim || {x:1,y:0}; const speed = 10; bullets.push({x:player.x+player.w/2, y:player.y+player.h/2, vx: aim.x*speed, vy: aim.y*speed}); beep(950); keys.shoot=false }
   // physics
   player.vy += gravity; player.y += player.vy;
   if(player.y + player.h > H-40){player.y = H-40 - player.h; player.vy = 0; player.onGround = true}
