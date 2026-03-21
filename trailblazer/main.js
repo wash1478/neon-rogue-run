@@ -1,4 +1,11 @@
-const canvas = document.getElementById('game'); const ctx = canvas.getContext('2d'); let W=canvas.width=innerWidth, H=canvas.height=innerHeight; window.addEventListener('resize',()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight});
+const canvas = document.getElementById('game'); const ctx = canvas.getContext('2d');
+function resizeCanvas(){ const dpr = window.devicePixelRatio || 1; canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px'; canvas.width = Math.floor(window.innerWidth * dpr); canvas.height = Math.floor(window.innerHeight * dpr); ctx.setTransform(dpr,0,0,dpr,0,0); W = window.innerWidth; H = window.innerHeight; }
+let W, H; resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+// pause on background
+let paused=false; document.addEventListener('visibilitychange', ()=>{ paused = document.hidden; });
+
+// wait for user gesture to enable audio and start loop
+let started=false; document.getElementById('start-btn').addEventListener('click', ()=>{ started=true; document.getElementById('start-overlay').style.display='none'; try{ const actx = new (window.AudioContext||window.webkitAudioContext)(); actx.resume(); }catch(e){} });
 
 // player bike (arcade physics)
 const bike = {x:80,y:H-120,w:48,h:28, vy:0, vx:0, onGround:false, angle:0, speed:3, score:0, airtime:0};
@@ -34,7 +41,7 @@ function update(){ // speed
   });
 }
 
-const particles=[]; function spawnParticles(x,y,c,col){ for(let i=0;i<c;i++) particles.push({x,y,vx:(Math.random()-0.5)*6,vy:(Math.random()-1.5)*6,life:40+Math.random()*30,color:col})}
+const particles=[]; function spawnParticles(x,y,c,col){ const cap = Math.floor(Math.max(12, c * (window.innerWidth<420?0.5:1))); for(let i=0;i<cap;i++) particles.push({x,y,vx:(Math.random()-0.5)*6,vy:(Math.random()-1.5)*6,life:40+Math.random()*30,color:col})}
 function updateParticles(){ for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=0.2; p.life--; if(p.life<0) particles.splice(i,1);} }
 
 function draw(){ ctx.clearRect(0,0,W,H); // sky ground

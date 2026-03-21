@@ -1,0 +1,2 @@
+#start-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35));z-index:50}
+#start-overlay button{font-size:20px;padding:14px 20px;border-radius:12px;background:#0ff;color:#001;border:none}
