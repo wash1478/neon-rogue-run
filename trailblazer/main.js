@@ -12,8 +12,16 @@ const bike = {x:80,y:H-120,w:48,h:28, vy:0, vx:0, onGround:false, angle:0, speed
 const gravity=0.9;
 const keys={left:false,right:false,accel:false,jump:false,trick:false};
 
+// themes
+const themes = [{id:'forest', sky:'#7ec8ff', ground:'#2b8a3e'},{id:'beach', sky:'#87e0ff', ground:'#e0c77a'},{id:'manhattan', sky:'#9db8d6', ground:'#6b6b6b'}];
+let currentTheme = 0;
+
 // world and obstacles
 let worldX=0; const obstacles=[]; const prairieDogs=[]; const ramps=[];
+
+// add theme switch button
+const themeBtn = document.createElement('button'); themeBtn.textContent='Theme'; themeBtn.style.position='absolute'; themeBtn.style.left='8px'; themeBtn.style.bottom='8px'; document.body.appendChild(themeBtn);
+themeBtn.addEventListener('click', ()=>{ currentTheme = (currentTheme+1)%themes.length; });
 
 // spawn obstacles randomly
 function spawnHole(){ const x = W + Math.random()*600 + 200; obstacles.push({x,y:H-40,w:60,h:40,type:'hole'}); }
@@ -30,7 +38,12 @@ function update(){ // speed
   if(keys.accel) bike.speed = Math.min(12,bike.speed+0.2); else bike.speed = Math.max(3,bike.speed-0.05);
   worldX += bike.speed; bike.score += bike.speed*0.01;
   // physics
-  bike.vy += gravity; bike.y += bike.vy; if(bike.y + bike.h > H-40){ bike.y = H-40 - bike.h; bike.vy = 0; bike.onGround=true; if(bike.airtime>8){ bike.score += Math.floor(bike.airtime*2); bike.airtime=0 }} else { bike.airtime += 1; }
+  bike.vy += gravity; bike.y += bike.vy; if(bike.y + bike.h > H-40){ const landed = !bike.onGround; bike.y = H-40 - bike.h; bike.vy = 0; bike.onGround=true; if(landed){ // landing logic
+      if(bike.airtime>8){ bike.score += Math.floor(bike.airtime*2); }
+      if(bike.trick && bike.airtime>12){ bike.score += Math.floor(bike.airtime*5); spawnParticles(bike.x,bike.y,30,'#ff0'); }
+      bike.airtime=0; bike.trick=false;
+    }
+  } else { bike.airtime += 1; }
   // obstacles movement
   obstacles.forEach(o=>{ o.x -= bike.speed });
   prairieDogs.forEach(p=>{ p.x -= bike.speed + 1; if(Math.random()<0.005) p.vx = -3; p.x += p.vx });
@@ -45,7 +58,7 @@ const particles=[]; function spawnParticles(x,y,c,col){ const cap = Math.floor(M
 function updateParticles(){ for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=0.2; p.life--; if(p.life<0) particles.splice(i,1);} }
 
 function draw(){ ctx.clearRect(0,0,W,H); // sky ground
- ctx.fillStyle='#7ec8ff'; ctx.fillRect(0,0,W,H); ctx.fillStyle='#2b8a3e'; ctx.fillRect(0,H-40,W,40);
+ const th = themes[currentTheme]; ctx.fillStyle=th.sky; ctx.fillRect(0,0,W,H); ctx.fillStyle=th.ground; ctx.fillRect(0,H-40,W,40);
  // bike
  ctx.fillStyle='#ff0'; ctx.fillRect(bike.x,bike.y,bike.w,bike.h);
  // obstacles
