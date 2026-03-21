@@ -228,8 +228,11 @@ document.getElementById('clear-scores').addEventListener('click', clearHighScore
 function exportSave(){ const raw = localStorage.getItem('neon_rogue_save')||''; const blob = new Blob([raw],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='neon_rogue_save.json'; a.click(); URL.revokeObjectURL(url); }
 function importSaveFile(){ const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json'; inp.onchange = e=>{ const f=e.target.files[0]; const r=new FileReader(); r.onload=()=>{ localStorage.setItem('neon_rogue_save', r.result); alert('Imported'); }; r.readAsText(f); }; inp.click(); }
 
-// register service worker
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').catch(()=>{}); }
+// register service worker and handle install prompt
+let deferredPrompt;
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt = e; const btn = document.createElement('button'); btn.textContent='Install Game'; btn.style.position='absolute'; btn.style.right='12px'; btn.style.top='12px'; btn.onclick = async ()=>{ if(deferredPrompt){ deferredPrompt.prompt(); const choice = await deferredPrompt.userChoice; deferredPrompt = null; btn.remove(); } }; document.body.appendChild(btn); });
+}
 
 function loop(){ update(); draw(); requestAnimationFrame(loop) }
 loop();
