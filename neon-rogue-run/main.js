@@ -26,13 +26,15 @@ const keys = {left:false,right:false,jump:false,shoot:false};
 const bullets = []; const enemies = [];
 
 let level = {wave:1, spawnInterval:2000, enemySpeedBase:2, difficulty:'normal'};
+const bossImg = new Image(); bossImg.src='assets/boss.svg';
 function spawnEnemy(type='grunt'){
   if(type==='grunt'){
     enemies.push({x:W+50,y:H-80,w:36,h:36, vx: - (level.enemySpeedBase + Math.random()*1), hp:1, type:'grunt'});
   } else if(type==='charger'){
     enemies.push({x:W+50,y:H-100,w:44,h:44, vx: - (level.enemySpeedBase+2 + Math.random()*1.5), hp:2, type:'charger'});
   } else if(type==='boss'){
-    enemies.push({x:W+200,y:H-160,w:120,h:120, vx:-0.6, hp:80, type:'boss', patternState:0, lastShot:0});
+    // tuned boss: higher HP and slower initial entrance; shotInterval configurable
+    enemies.push({x:W+300,y:H-200,w:160,h:120, vx:0, hp:160, type:'boss', patternState:0, lastShot:0, entering:true, shotInterval:900});
   }
 }
 setInterval(()=>{
@@ -56,15 +58,15 @@ function updateEnemyBehavior(){
   for(const e of enemies){
     if(e.type==='boss'){
       // entrance: if flagged entering, ease to target x
-      if(e.entering){ e.x -= 2; if(e.x <= W-280){ e.entering=false; e.lastShot=Date.now(); }} else {
+      if(e.entering){ e.x -= 3; if(e.x <= W-320){ e.entering=false; e.lastShot=Date.now(); }} else {
         // simple sinusoidal vertical bobbing
-        e.y += Math.sin(Date.now()/400 + (e.x/100))*0.6;
-        // shoot every 1.2s
-        if(Date.now() - (e.lastShot||0) > 1200){
+        e.y += Math.sin(Date.now()/300 + (e.x/100))*0.8;
+        // shoot according to configurable interval
+        if(Date.now() - (e.lastShot||0) > (e.shotInterval||900)){
           e.lastShot = Date.now();
-          // fire three bullets in a spread
-          for(let i=-1;i<=1;i++){
-            enemyBullets.push({x:e.x+e.w/2, y:e.y+e.h/2, vx:-4 + i, vy: i*0.5});
+          // fire five bullets in a spread for boss
+          for(let i=-2;i<=2;i++){
+            enemyBullets.push({x:e.x+e.w/2, y:e.y+e.h/2, vx:-3 + i*0.6, vy: i*0.3});
           }
         }
       }
@@ -187,7 +189,7 @@ function draw(){
   // enemy bullets
   ctx.fillStyle='#fda'; enemyBullets.forEach(eb=>ctx.fillRect(eb.x, eb.y, 6, 6));
   // enemies
-  enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(e.type==='boss'){ ctx.fillStyle='#f90'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#000'; ctx.fillText('BOSS', e.x+8, e.y+20);} else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
+  enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(e.type==='boss'){ if(bossImg.complete) ctx.drawImage(bossImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f90'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#000'; ctx.fillText('BOSS', e.x+8, e.y+20);} } else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
   // particles
   particles.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,3,3); });
   // HUD
