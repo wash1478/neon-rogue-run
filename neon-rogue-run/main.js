@@ -23,8 +23,11 @@ const gravity = 0.8;
 // lives
 let totalLives = 3;
 function remainingLives(){ return Math.max(0, totalLives - 1); }
-let gameOver=false;
+let gameOver=false; let started=false;
 const keys = {up:false,down:false,jump:false,shoot:false};
+
+// start overlay handler
+document.getElementById('start-btn').addEventListener('click', ()=>{ started=true; document.getElementById('start-overlay').style.display='none'; try{ audioCtx.resume(); }catch(e){} });
 
 // bullets and enemies
 const bullets = []; const enemies = [];
@@ -162,7 +165,9 @@ function update(){
   // check enemy bullets hitting player
   for(let i=enemyBullets.length-1;i>=0;i--){ const eb=enemyBullets[i];
     if(eb.x>player.x && eb.x<player.x+player.w && eb.y>player.y && eb.y<player.y+player.h){
-      if(Date.now() > playerState.invulnerableUntil){ playerState.lives--; playerState.invulnerableUntil = Date.now()+1000; spawnParticles(player.x+player.w/2, player.y+player.h/2, 20, '#fff'); beep(180); }
+      if(Date.now() > playerState.invulnerableUntil){ playerState.lives--; playerState.invulnerableUntil = Date.now()+1000; spawnParticles(player.x+player.w/2, player.y+player.h/2, 20, '#fff'); beep(180);
+          if(playerState.lives<=0){ gameOver=true; document.getElementById('gameover').style.display='flex'; document.getElementById('final-score').textContent='Final Score: '+Math.floor(player.score); }
+      }
       enemyBullets.splice(i,1);
     }
   }
@@ -190,8 +195,8 @@ function draw(){
   particles.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,3,3); });
   // HUD
   document.getElementById('score').textContent = 'Score: '+player.score;
-  // lives
-  ctx.fillStyle='#fff'; ctx.font='16px sans-serif'; ctx.fillText('Lives: '+playerState.lives, 12, 28);
+  // lives (show remaining = lives-1)
+  ctx.fillStyle='#fff'; ctx.font='16px sans-serif'; ctx.fillText('Lives: '+Math.max(0, playerState.lives-1), 12, 28);
 }
 
 function loop(){ update(); updateParticles(); draw(); requestAnimationFrame(loop) }
