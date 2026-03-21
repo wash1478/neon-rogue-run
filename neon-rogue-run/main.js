@@ -30,14 +30,17 @@ function spawnEnemy(){
 }
 setInterval(spawnEnemy,2000);
 
-// controls
-['left','right','jump','shoot'].forEach(id=>{
-  const btn=document.getElementById(id);
-  btn.addEventListener('touchstart',e=>{e.preventDefault(); keys[id]=true});
-  btn.addEventListener('touchend',e=>{e.preventDefault(); keys[id]=false});
-  btn.addEventListener('mousedown',e=>{keys[id]=true});
-  btn.addEventListener('mouseup',e=>{keys[id]=false});
-});
+// joystick controls
+const joyBase = document.getElementById('joystick');
+const stick = document.getElementById('stick');
+let dragging=false, joyCenter={x:0,y:0}, joyRadius=36;
+function resetStick(){ stick.style.transform='translate(0px,0px)'; keys.left=false; keys.right=false }
+joyBase.addEventListener('touchstart',e=>{ e.preventDefault(); dragging=true; const r=joyBase.getBoundingClientRect(); joyCenter={x:r.left + r.width/2, y:r.top + r.height/2}; });
+joyBase.addEventListener('touchmove',e=>{ if(!dragging) return; e.preventDefault(); const t=e.touches[0]; let dx=t.clientX-joyCenter.x; let dy=t.clientY-joyCenter.y; const dist=Math.sqrt(dx*dx+dy*dy); const max=joyRadius; if(dist>max){ dx=dx*(max/dist); dy=dy*(max/dist); } stick.style.transform=`translate(${dx}px,${dy}px)`; // left/right
+ if(dx<-10){ keys.left=true; keys.right=false } else if(dx>10){ keys.right=true; keys.left=false } else { keys.left=false; keys.right=false } });
+joyBase.addEventListener('touchend',e=>{ dragging=false; resetStick(); });
+// action buttons
+['jump','shoot'].forEach(id=>{ const btn=document.getElementById(id); btn.addEventListener('touchstart',e=>{e.preventDefault(); keys[id]=true}); btn.addEventListener('touchend',e=>{e.preventDefault(); keys[id]=false}); btn.addEventListener('mousedown',e=>{keys[id]=true}); btn.addEventListener('mouseup',e=>{keys[id]=false}); });
 
 document.getElementById('save').addEventListener('click',saveGame);
 document.getElementById('load').addEventListener('click',loadGame);
