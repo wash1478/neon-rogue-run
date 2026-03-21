@@ -8,9 +8,16 @@ let paused=false; document.addEventListener('visibilitychange', ()=>{ paused = d
 let started=false; document.getElementById('start-btn').addEventListener('click', ()=>{ started=true; document.getElementById('start-overlay').style.display='none'; try{ const actx = new (window.AudioContext||window.webkitAudioContext)(); actx.resume(); }catch(e){} });
 
 // player bike (arcade physics)
-const bike = {x:80,y:H-120,w:48,h:28, vy:0, vx:0, onGround:false, angle:0, speed:3, score:0, airtime:0};
-const gravity=0.9;
-const keys={left:false,right:false,accel:false,jump:false,trick:false};
+const bike = {x:80,y:H/2,w:48,h:28, vy:0, vx:0, onGround:false, angle:0, speed:3, score:0, airtime:0};
+const gravity=0.6;
+const keys={up:false,down:false,accel:false,jump:false,shoot:false};
+
+// lives
+let totalLives = 3; // actual lives
+function remainingLives(){ return Math.max(0, totalLives - 1); }
+
+// game state
+let gameOver=false;
 
 // themes
 const themes = [{id:'forest', sky:'#7ec8ff', ground:'#2b8a3e'},{id:'beach', sky:'#87e0ff', ground:'#e0c77a'},{id:'manhattan', sky:'#9db8d6', ground:'#6b6b6b'}];
@@ -29,14 +36,20 @@ function spawnPrairie(){ const x=W+Math.random()*500+200; prairieDogs.push({x,y:
 function spawnRamp(){ const x=W+Math.random()*800+200; ramps.push({x,y:H-70,w:80,h:30}); }
 setInterval(()=>{ if(Math.random()<0.5) spawnHole(); if(Math.random()<0.3) spawnPrairie(); if(Math.random()<0.2) spawnRamp(); },1200);
 
-// controls (simple joystick for left/right not implemented fully here yet)
+// controls (joystick now controls vertical float)
 document.getElementById('accel').addEventListener('touchstart',e=>{keys.accel=true}); document.getElementById('accel').addEventListener('touchend',e=>{keys.accel=false});
-document.getElementById('jump').addEventListener('click',()=>{ if(bike.onGround){ bike.vy=-16; bike.onGround=false; bike.airtime=0 } });
-document.getElementById('trick').addEventListener('click',()=>{ if(!bike.onGround){ bike.trick=true } });
+document.getElementById('jump').addEventListener('click',()=>{ if(bike.onGround){ bike.vy=-12; bike.onGround=false; bike.airtime=0 } });
+document.getElementById('trick').addEventListener('click',()=>{ keys.shoot = true; });
 
-function update(){ // speed
+// restart handler
+document.getElementById('restart').addEventListener('click', ()=>{ totalLives=3; gameOver=false; document.getElementById('gameover').style.display='none'; bike.score=0; obstacles.length=0; prairieDogs.length=0; ramps.length=0; });
+
+function update(){ if(gameOver || paused) return; // speed
   if(keys.accel) bike.speed = Math.min(12,bike.speed+0.2); else bike.speed = Math.max(3,bike.speed-0.05);
   worldX += bike.speed; bike.score += bike.speed*0.01;
+  // joystick vertical float: handle simple up/down keys
+  if(keys.up) bike.y = Math.max(40, bike.y - 4);
+  if(keys.down) bike.y = Math.min(H-120, bike.y + 4);
   // physics
   bike.vy += gravity; bike.y += bike.vy; if(bike.y + bike.h > H-40){ const landed = !bike.onGround; bike.y = H-40 - bike.h; bike.vy = 0; bike.onGround=true; if(landed){ // landing logic
       if(bike.airtime>8){ bike.score += Math.floor(bike.airtime*2); }
@@ -44,13 +57,24 @@ function update(){ // speed
       bike.airtime=0; bike.trick=false;
     }
   } else { bike.airtime += 1; }
-  // obstacles movement
-  obstacles.forEach(o=>{ o.x -= bike.speed });
-  prairieDogs.forEach(p=>{ p.x -= bike.speed + 1; if(Math.random()<0.005) p.vx = -3; p.x += p.vx });
+  // obstacles movement (enemies can be at different heights)
+  obstacles.forEach(o=>{ o.x -= bike.speed; });
+  prairieDogs.forEach(p=>{ p.x -= bike.speed + 1 + (Math.random()-0.5)*0.5; p.y = H-60 - Math.floor(Math.random()*40); if(Math.random()<0.01) p.vx = -3; p.x += p.vx });
   ramps.forEach(r=>r.x -= bike.speed);
-  // collisions (holes)
-  obstacles.forEach((o,i)=>{ if(o.x + o.w < -200) obstacles.splice(i,1); if(bike.x + bike.w > o.x && bike.x < o.x + o.w && bike.y + bike.h > o.y && bike.y < o.y + o.h){ // hit hole -> crash
-    bike.score = Math.max(0,bike.score-10); bike.speed = Math.max(3,bike.speed-4); spawnParticles(bike.x, bike.y,20,'#fff'); }
+  // enemies: allow flying bad guys at different heights
+  if(Math.random()<0.01){ // occasional flying enemy
+    const fy = 60 + Math.random()*(H-200);
+    obstacles.push({x:W+200,y:fy,w:40,h:28,type:'fly'});
+  }
+  // collisions (holes/enemies/flyers)
+  obstacles.forEach((o,i)=>{ if(o.x + o.w < -200) obstacles.splice(i,1);
+    if(bike.x + bike.w > o.x && bike.x < o.x + o.w && bike.y + bike.h > o.y && bike.y < o.y + o.h){
+      // hit obstacle -> reduce life
+      totalLives -= 1; spawnParticles(bike.x,bike.y,30,'#fff');
+      obstacles.splice(i,1);
+      document.getElementById('lives').textContent = 'Lives: '+remainingLives();
+      if(totalLives<=0){ gameOver=true; document.getElementById('gameover').style.display='flex'; document.getElementById('final-score').textContent='Final Score: '+Math.floor(bike.score); }
+    }
   });
 }
 
