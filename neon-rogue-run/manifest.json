@@ -1,0 +1,9 @@
+{
+  "name": "Neon Rogue Run",
+  "short_name": "NeonRun",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#001",
+  "theme_color": "#0ff",
+  "icons": [{ "src": "assets/player.svg", "sizes":"64x96", "type":"image/svg+xml" }]
+}

@@ -5,4 +5,7 @@ canvas{background:linear-gradient(180deg,#001 0%,#002 100%);width:100%;height:10
 #controls button,#save-load button{font-size:18px;padding:10px;margin:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:8px}
 #controls{display:flex;align-items:center}
 #score{font-weight:600}
+#joystick{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);position:relative;margin-right:8px;touch-action:none}
+#stick{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);position:absolute;left:23px;top:23px;}
+#action-buttons{display:flex;flex-direction:column}
 @media (min-width:700px){#controls button{font-size:20px;padding:12px}}
