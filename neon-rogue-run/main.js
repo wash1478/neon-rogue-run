@@ -50,6 +50,28 @@ setInterval(()=>{
   }
 }, 5000);
 
+const enemyBullets = [];
+
+function updateEnemyBehavior(){
+  for(const e of enemies){
+    if(e.type==='boss'){
+      // entrance: if flagged entering, ease to target x
+      if(e.entering){ e.x -= 2; if(e.x <= W-280){ e.entering=false; e.lastShot=Date.now(); }} else {
+        // simple sinusoidal vertical bobbing
+        e.y += Math.sin(Date.now()/400 + (e.x/100))*0.6;
+        // shoot every 1.2s
+        if(Date.now() - (e.lastShot||0) > 1200){
+          e.lastShot = Date.now();
+          // fire three bullets in a spread
+          for(let i=-1;i<=1;i++){
+            enemyBullets.push({x:e.x+e.w/2, y:e.y+e.h/2, vx:-4 + i, vy: i*0.5});
+          }
+        }
+      }
+    }
+  }
+}
+
 // joystick controls
 const joyBase = document.getElementById('joystick');
 const stick = document.getElementById('stick');
@@ -102,7 +124,18 @@ function update(){
   // bullets
   for(let i=bullets.length-1;i>=0;i--){ bullets[i].x += bullets[i].vx; if(bullets[i].x>W+50||bullets[i].x<-50) bullets.splice(i,1)}
   // enemies
-  for(let i=enemies.length-1;i>=0;i--){ enemies[i].x += enemies[i].vx; if(enemies[i].x < -100) enemies.splice(i,1)}
+  for(let i=enemies.length-1;i>=0;i--){
+    // if boss and entering, slide in; otherwise move normally
+    if(enemies[i].type==='boss' && enemies[i].entering){ enemies[i].x -= 2; } else { enemies[i].x += enemies[i].vx; }
+    if(enemies[i].x < -200) enemies.splice(i,1)
+  }
+
+  // enemy bullets update
+  for(let i=enemyBullets.length-1;i>=0;i--){ const eb = enemyBullets[i]; eb.x += eb.vx; eb.y += eb.vy; eb.vy += 0.12; if(eb.x < -50 || eb.x > W+50 || eb.y>H+50) enemyBullets.splice(i,1); }
+
+  // enemy AI
+  updateEnemyBehavior();
+
   // collisions
   for(let ei=enemies.length-1; ei>=0; ei--){ const e = enemies[ei];
     // bullets
@@ -127,6 +160,14 @@ function update(){
       }
     }
   }
+
+  // check enemy bullets hitting player
+  for(let i=enemyBullets.length-1;i>=0;i--){ const eb=enemyBullets[i];
+    if(eb.x>player.x && eb.x<player.x+player.w && eb.y>player.y && eb.y<player.y+player.h){
+      if(Date.now() > playerState.invulnerableUntil){ playerState.lives--; playerState.invulnerableUntil = Date.now()+1000; spawnParticles(player.x+player.w/2, player.y+player.h/2, 20, '#fff'); beep(180); }
+      enemyBullets.splice(i,1);
+    }
+  }
 }
 
 // draw updated to show powerups & lives
@@ -143,6 +184,8 @@ function draw(){
   if(playerImg.complete) ctx.drawImage(playerImg, player.x, player.y, player.w, player.h); else { ctx.fillStyle='#0ff'; ctx.fillRect(player.x,player.y,player.w,player.h)}
   // bullets
   ctx.fillStyle='#ff5'; bullets.forEach(b=>ctx.fillRect(b.x,b.y,8,4));
+  // enemy bullets
+  ctx.fillStyle='#fda'; enemyBullets.forEach(eb=>ctx.fillRect(eb.x, eb.y, 6, 6));
   // enemies
   enemies.forEach(e=>{ if(e.type==='power'){ ctx.fillStyle='#6f6'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#003'; ctx.fillText(e.kind, e.x, e.y-4)} else if(e.type==='boss'){ ctx.fillStyle='#f90'; ctx.fillRect(e.x,e.y,e.w,e.h); ctx.fillStyle='#000'; ctx.fillText('BOSS', e.x+8, e.y+20);} else if(enemyImg.complete) ctx.drawImage(enemyImg, e.x, e.y, e.w, e.h); else { ctx.fillStyle='#f66'; ctx.fillRect(e.x,e.y,e.w,e.h) } });
   // particles
