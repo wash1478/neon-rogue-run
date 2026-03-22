@@ -22,9 +22,17 @@ form.addEventListener('submit', e=>{ e.preventDefault(); const distance=document
 });
 load();
 
-// map integration: show markers for rides with location
-let map, layer;
-function showMapIfNeeded(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); if(coords.length===0) return; document.getElementById('map').style.display='block'; if(!map){ map = L.map('map').setView(coords[0], 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); }
-  layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
+// map integration: show markers for rides with location and simple route drawing
+let map, layer, routeLayer, routeMarkers = [], addingRoute=false;
+function ensureMap(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); if(coords.length===0 && !addingRoute) return; document.getElementById('map').style.display='block'; if(!map){ map = L.map('map').setView(coords[0]||[0,0], 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); routeLayer = L.layerGroup().addTo(map); }
+  layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); if(coords.length) map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
+
+function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; map.on('click', onMapClick); routeMarkers=[]; routeLayer.clearLayers(); }
+function finishRoute(){ addingRoute=false; map.off('click', onMapClick); const route = routeMarkers.map(m=>({lat:m.getLatLng().lat, lng:m.getLatLng().lng})); // save route
+ const routes = JSON.parse(localStorage.getItem('routes')||'[]'); routes.unshift({route, date:new Date().toISOString()}); localStorage.setItem('routes', JSON.stringify(routes)); document.getElementById('finish-route').style.display='none'; document.getElementById('clear-route').style.display='none'; alert('Route saved'); }
+function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); }
+function onMapClick(e){ const mk = L.marker(e.latlng).addTo(routeLayer); routeMarkers.push(mk); const latlngs = routeMarkers.map(m=>m.getLatLng()); if(window.currentPolyline) routeLayer.removeLayer(window.currentPolyline); window.currentPolyline = L.polyline(latlngs,{color:'#f06'}).addTo(routeLayer); }
+
+function showMapIfNeeded(){ ensureMap(); }
 
 showMapIfNeeded();
