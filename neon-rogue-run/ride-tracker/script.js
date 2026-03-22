@@ -35,27 +35,29 @@ function finishRoute(){ addingRoute=false; map.off('mousedown', startDraw); map.
   const route = (window.currentPolyline ? window.currentPolyline.getLatLngs() : []).map(p=>({lat:p.lat,lng:p.lng})); if(route.length===0){ alert('No route drawn'); return;} const routes = JSON.parse(localStorage.getItem('routes')||'[]'); routes.unshift({route, date:new Date().toISOString()}); localStorage.setItem('routes', JSON.stringify(routes)); document.getElementById('finish-route').style.display='none'; document.getElementById('clear-route').style.display='none'; refreshRoutesList(); alert('Route saved'); }
 function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); if(window.currentPolyline){ routeLayer.removeLayer(window.currentPolyline); window.currentPolyline=null } }
 
-let drawing=false;
-function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer);
+let drawing=false; let lastPointer=null; let drawRAF=null;
+function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer); lastPointer = null;
   const container = map.getContainer();
-  function pointerMove(ev){ if(!drawing) return; const latlng = map.mouseEventToLatLng(ev); const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); }
-  function pointerUp(ev){ drawing=false; container.removeEventListener('pointermove', pointerMove); container.removeEventListener('pointerup', pointerUp); container.removeEventListener('pointercancel', pointerUp); }
-  container.addEventListener('pointermove', pointerMove);
-  container.addEventListener('pointerup', pointerUp);
-  container.addEventListener('pointercancel', pointerUp);
+  function pointerMoveRaw(ev){ lastPointer = ev; }
+  function pointerUpRaw(ev){ stopDrawing(); }
+  container.addEventListener('pointermove', pointerMoveRaw);
+  container.addEventListener('pointerup', pointerUpRaw);
+  container.addEventListener('pointercancel', pointerUpRaw);
+  // start RAF sampler
+  function sample(){ if(!drawing){ return; } if(lastPointer){ try{ const latlng = map.mouseEventToLatLng(lastPointer); if(latlng){ const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); } }catch(e){} } drawRAF = requestAnimationFrame(sample); }
+  sample();
+  document.getElementById('draw-indicator').style.display='inline'; document.getElementById('undo-point').style.display='inline-block';
 }
-function drawMove(e){}
-function endDraw(e){}
+function stopDrawing(){ drawing=false; lastPointer=null; if(drawRAF){ cancelAnimationFrame(drawRAF); drawRAF=null; }
+  const container = map.getContainer(); container.removeEventListener('pointermove', ()=>{}); container.removeEventListener('pointerup', ()=>{}); container.removeEventListener('pointercancel', ()=>{});
+  document.getElementById('draw-indicator').style.display='none'; }
 
 // draw button toggles draw mode and locks zoom
 document.getElementById('draw-route').addEventListener('click', ()=>{
   ensureMap(); if(!map) return; map.dragging.disable(); map.touchZoom.disable(); map.scrollWheelZoom.disable(); map.doubleClickZoom.disable();
   const container = map.getContainer();
-  function pointerDown(ev){ ev.preventDefault(); // start freehand on pointerdown
-    if(ev.pointerId) try{ container.setPointerCapture(ev.pointerId); }catch(e){}
-    startDraw(ev);
-    // remove this handler once drawing started
-    container.removeEventListener('pointerdown', pointerDown);
+  function pointerDown(ev){ ev.preventDefault(); if(ev.pointerId) try{ container.setPointerCapture(ev.pointerId); }catch(e){}
+    startDraw(ev); container.removeEventListener('pointerdown', pointerDown);
   }
   container.addEventListener('pointerdown', pointerDown);
   document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block';
@@ -81,3 +83,6 @@ function refreshRoutesList(){ const routes = JSON.parse(localStorage.getItem('ro
 function exportGPX(routeObj, idx){ const points = routeObj.route; const header = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="RideTracker">\n<trk><name>Route ${idx+1}</name><trkseg>\n`; const pts = points.map(p=>`<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n'); const footer = `\n</trkseg></trk>\n</gpx>`; const gpx = header + pts + footer; const blob = new Blob([gpx],{type:'application/gpx+xml'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`route-${idx+1}.gpx`; a.click(); URL.revokeObjectURL(url); }
 
 showMapIfNeeded(); refreshRoutesList();
+
+// undo last drawn point
+document.getElementById('undo-point').addEventListener('click', ()=>{ if(window.currentPolyline){ const pts = window.currentPolyline.getLatLngs(); pts.pop(); window.currentPolyline.setLatLngs(pts); } });
