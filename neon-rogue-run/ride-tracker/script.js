@@ -28,10 +28,21 @@ function ensureMap(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'
   layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); if(coords.length) map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
 
 
-function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; routeMarkers=[]; routeLayer.clearLayers(); // enable freehand draw
-  map.on('mousedown', startDraw); map.on('touchstart', startDraw);
+function onMapClick(e){ // add a dot and connect to previous
+  if(!window.currentPolyline){ window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer); }
+  const mk = L.marker(e.latlng).addTo(routeLayer); routeMarkers.push(mk);
+  const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(e.latlng); window.currentPolyline.setLatLngs(latlngs);
 }
-function finishRoute(){ addingRoute=false; map.off('mousedown', startDraw); map.off('touchstart', startDraw); map.off('mousemove', drawMove); map.off('touchmove', drawMove); map.off('mouseup', endDraw); map.off('touchend', endDraw);
+function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; routeMarkers=[]; routeLayer.clearLayers(); // enable click-to-add dots
+  map.on('click', onMapClick);
+  // also add pointerdown on container as a reliable mobile fallback
+  const container = map.getContainer();
+  function containerDown(ev){ ev.preventDefault(); const latlng = map.mouseEventToLatLng(ev); onMapClick({latlng}); }
+  container.addEventListener('pointerdown', containerDown);
+  // store the handler so we can remove it later
+  map._containerDownHandler = containerDown;
+}
+function finishRoute(){ addingRoute=false; map.off('click', onMapClick); if(map && map._containerDownHandler){ map.getContainer().removeEventListener('pointerdown', map._containerDownHandler); delete map._containerDownHandler; }
   const route = (window.currentPolyline ? window.currentPolyline.getLatLngs() : []).map(p=>({lat:p.lat,lng:p.lng})); if(route.length===0){ alert('No route drawn'); return;} const routes = JSON.parse(localStorage.getItem('routes')||'[]'); routes.unshift({route, date:new Date().toISOString()}); localStorage.setItem('routes', JSON.stringify(routes)); document.getElementById('finish-route').style.display='none'; document.getElementById('clear-route').style.display='none'; refreshRoutesList(); alert('Route saved'); }
 function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); if(window.currentPolyline){ routeLayer.removeLayer(window.currentPolyline); window.currentPolyline=null } }
 
