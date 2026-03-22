@@ -14,7 +14,8 @@ function animateRide(){ const bike=document.createElement('div'); bike.className
   </g>
 </svg>`;
  anim.appendChild(bike);
- const startX=-220; const endX=window.innerWidth+220; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; const id=setInterval(()=>{ x += 14; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 26); }
+ const startX=-220; const endX=window.innerWidth+220; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; // slower: smaller step and larger interval
+ const id=setInterval(()=>{ x += 6; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 60); }
 form.addEventListener('submit', e=>{ e.preventDefault(); const distance=document.getElementById('distance').value; const date=document.getElementById('date').value; const time=document.getElementById('time').value; const rides = JSON.parse(localStorage.getItem('rides')||'[]');
   // try to get geolocation
   if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ rides.unshift({distance,date,time,loc:pos.coords}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); showMapIfNeeded(); }, ()=>{ rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }); } else { rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }
