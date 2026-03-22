@@ -1,7 +1,17 @@
 const form=document.getElementById('ride-form'); const feed=document.getElementById('feed'); const anim=document.getElementById('animation');
 function load(){ const data=JSON.parse(localStorage.getItem('rides')||'[]'); feed.innerHTML=''; data.forEach(r=>{ const el=document.createElement('div'); el.className='ride'; el.textContent=`${r.date} ${r.time} — ${r.distance} km`; feed.appendChild(el); }); }
-function animateRide(){ const bike=document.createElement('div'); bike.className='bike'; bike.innerHTML='<svg viewBox="0 0 120 60" width="120" height="60"><rect rx="8" width="120" height="40" y="10" fill="#0ff"/></svg>';
+function animateRide(){ const bike=document.createElement('div'); bike.className='bike'; bike.innerHTML='<svg viewBox="0 0 140 80" width="140" height="80"><g><ellipse cx="30" cy="60" rx="18" ry="8" fill="#333"/><ellipse cx="110" cy="60" rx="18" ry="8" fill="#333"/></g><g><rect x="20" y="30" width="100" height="24" rx="6" fill="#6c3"/><circle cx="40" cy="40" r="6" fill="#060"/></svg>';
  anim.appendChild(bike);
- const startX=-140; const endX=window.innerWidth+140; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; const id=setInterval(()=>{ x += 10; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 30); }
-form.addEventListener('submit', e=>{ e.preventDefault(); const distance=document.getElementById('distance').value; const date=document.getElementById('date').value; const time=document.getElementById('time').value; const rides = JSON.parse(localStorage.getItem('rides')||'[]'); rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); });
+ const startX=-160; const endX=window.innerWidth+160; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; const id=setInterval(()=>{ x += 12; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 28); }
+form.addEventListener('submit', e=>{ e.preventDefault(); const distance=document.getElementById('distance').value; const date=document.getElementById('date').value; const time=document.getElementById('time').value; const rides = JSON.parse(localStorage.getItem('rides')||'[]');
+  // try to get geolocation
+  if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ rides.unshift({distance,date,time,loc:pos.coords}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); showMapIfNeeded(); }, ()=>{ rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }); } else { rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }
+});
 load();
+
+// map integration: show markers for rides with location
+let map, layer;
+function showMapIfNeeded(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); if(coords.length===0) return; document.getElementById('map').style.display='block'; if(!map){ map = L.map('map').setView(coords[0], 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); }
+  layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
+
+showMapIfNeeded();

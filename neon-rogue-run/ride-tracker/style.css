@@ -7,3 +7,4 @@ button{padding:10px 14px;margin-top:8px}
 .ride{padding:10px;border:1px solid #ddd;margin-bottom:8px;border-radius:6px;background:#fff}
 #animation{position:fixed;left:0;top:0;width:100%;height:100%;}
 .bike{position:absolute;width:120px;height:60px;background:transparent}
+#map{border:1px solid #ccc;border-radius:6px}
