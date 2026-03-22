@@ -49,7 +49,16 @@ function endDraw(e){}
 
 // draw button toggles draw mode and locks zoom
 document.getElementById('draw-route').addEventListener('click', ()=>{
-  ensureMap(); if(!map) return; map.dragging.disable(); map.touchZoom.disable(); map.scrollWheelZoom.disable(); map.doubleClickZoom.disable(); startDraw(); document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block';
+  ensureMap(); if(!map) return; map.dragging.disable(); map.touchZoom.disable(); map.scrollWheelZoom.disable(); map.doubleClickZoom.disable();
+  const container = map.getContainer();
+  function pointerDown(ev){ ev.preventDefault(); // start freehand on pointerdown
+    if(ev.pointerId) try{ container.setPointerCapture(ev.pointerId); }catch(e){}
+    startDraw(ev);
+    // remove this handler once drawing started
+    container.removeEventListener('pointerdown', pointerDown);
+  }
+  container.addEventListener('pointerdown', pointerDown);
+  document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block';
 });
 
 // default map center: Boulder, CO
