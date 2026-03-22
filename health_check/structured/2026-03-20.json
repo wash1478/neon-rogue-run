@@ -1,0 +1,150 @@
+[
+  {
+    "timestamp": "2026-03-20T03:00:03.580096Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": null,
+    "mood_rating": 5,
+    "exercised": true,
+    "exercise_minutes": 40,
+    "exercise_type": "exercise bike",
+    "notes": "Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-20T16:00:03.909795Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 5,
+    "exercised": true,
+    "exercise_minutes": 40,
+    "exercise_type": "exercise",
+    "notes": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-20T20:00:03.528022Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 5,
+    "exercised": true,
+    "exercise_minutes": 40,
+    "exercise_type": "exercise",
+    "notes": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-20T20:00:03.939986Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 5,
+    "exercised": true,
+    "exercise_minutes": 40,
+    "exercise_type": "exercise",
+    "notes": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  }
+]

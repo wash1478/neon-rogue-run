@@ -1,0 +1,24 @@
+[
+  {
+    "timestamp": "2026-03-18T00:18:37-06:00",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": null,
+    "mood_rating": 5,
+    "exercised": true,
+    "exercise_minutes": 20,
+    "exercise_type": "Exercise",
+    "notes": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  }
+]

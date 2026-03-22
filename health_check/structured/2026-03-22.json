@@ -1,0 +1,346 @@
+[
+  {
+    "timestamp": "2026-03-22T03:00:03.269862Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 6,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 195,
+    "exercise_type": "bike",
+    "notes": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-22T03:00:03.333491Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 6,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 195,
+    "exercise_type": "bike",
+    "notes": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-22T16:00:03.003575Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-22T03:00:47.570000+00:00",
+        "content": "Dinner: Pasta with marinara. Ice cream.  Lungs 4"
+      },
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 195,
+    "exercise_type": "bike",
+    "notes": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-22T16:00:03.581304Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-22T03:00:47.570000+00:00",
+        "content": "Dinner: Pasta with marinara. Ice cream.  Lungs 4"
+      },
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 195,
+    "exercise_type": "bike",
+    "notes": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-22T18:00:03.023053Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-22T03:00:47.570000+00:00",
+        "content": "Dinner: Pasta with marinara. Ice cream.  Lungs 4"
+      },
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 195,
+    "exercise_type": "bike",
+    "notes": "Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  },
+  {
+    "timestamp": "2026-03-22T20:00:02.704379Z",
+    "prompts_sent": [
+      "What did you eat?",
+      "How are your lungs feeling?",
+      "How's your general mood?",
+      "Have you exercised today? If yes, when?"
+    ],
+    "raw_responses": [
+      {
+        "timestamp": "2026-03-22T18:02:19.488000+00:00",
+        "content": "Breakfast (brunch) roasted potatoes and eggs with strawberries. Caffine: mud water.  15 minute walk for exercise"
+      },
+      {
+        "timestamp": "2026-03-22T03:00:47.570000+00:00",
+        "content": "Dinner: Pasta with marinara. Ice cream.  Lungs 4"
+      },
+      {
+        "timestamp": "2026-03-21T20:03:05.255000+00:00",
+        "content": "Breakfast burrito for lunch.  Lungs are 6.  Mood is good."
+      },
+      {
+        "timestamp": "2026-03-21T16:29:53.562000+00:00",
+        "content": "No breakfast. Lungs 5 80 minute bike ride outside. Mood good"
+      },
+      {
+        "timestamp": "2026-03-21T06:16:19.036000+00:00",
+        "content": "Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T20:01:16.417000+00:00",
+        "content": "Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10"
+      },
+      {
+        "timestamp": "2026-03-20T05:54:31.241000+00:00",
+        "content": "Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today."
+      },
+      {
+        "timestamp": "2026-03-19T03:46:56.550000+00:00",
+        "content": "Did you track that?"
+      },
+      {
+        "timestamp": "2026-03-19T03:45:32.159000+00:00",
+        "content": "Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed."
+      },
+      {
+        "timestamp": "2026-03-19T02:28:58.169000+00:00",
+        "content": "Hello?"
+      },
+      {
+        "timestamp": "2026-03-18T06:13:01.684000+00:00",
+        "content": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+      }
+    ],
+    "meal_text": "Breakfast (brunch) roasted potatoes and eggs with strawberries. Caffine: mud water.  15 minute walk for exercise Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "lung_rating": 4,
+    "mood_rating": 3,
+    "exercised": true,
+    "exercise_minutes": 210,
+    "exercise_type": "walk",
+    "notes": "Breakfast (brunch) roasted potatoes and eggs with strawberries. Caffine: mud water.  15 minute walk for exercise Dinner: Pasta with marinara. Ice cream.  Lungs 4 Breakfast burrito for lunch.  Lungs are 6.  Mood is good. No breakfast. Lungs 5 80 minute bike ride outside. Mood good Dinner was a yellow rice with chicken kabobs and Greek salad. Rode exercise bike for 35 minutes around 6:30.  Mood :3  lungs 5 of 10 Breakfast toast jelly. Lunch toast and eggs.  Did a 40 minute walk.  Lungs feel tight 6 out of 10. Mood 6 of 10 Breakfast: bagel with jam, lunch was a turkey sandwich dinner was egg and potato tacos.  Lungs are 4 out of ten. Mood ok. No exercise today. Did you track that? Bird call for dinner.  Rode the exercise bike for 20 minutes this evening. Feeling semi stressed. Hello? Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+  }
+]
