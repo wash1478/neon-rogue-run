@@ -33,6 +33,14 @@ function finishRoute(){ addingRoute=false; map.off('click', onMapClick); const r
 function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); }
 function onMapClick(e){ const mk = L.marker(e.latlng).addTo(routeLayer); routeMarkers.push(mk); const latlngs = routeMarkers.map(m=>m.getLatLng()); if(window.currentPolyline) routeLayer.removeLayer(window.currentPolyline); window.currentPolyline = L.polyline(latlngs,{color:'#f06'}).addTo(routeLayer); }
 
+// default map center: Boulder, CO
+const defaultCenter = [40.014986, -105.270546];
+
 function showMapIfNeeded(){ ensureMap(); }
 
-showMapIfNeeded();
+// route manager: list saved routes and allow view/export
+function refreshRoutesList(){ const routes = JSON.parse(localStorage.getItem('routes')||'[]'); const el = document.getElementById('routes-list'); el.innerHTML = '<h3>Saved Routes</h3>' + (routes.length? '' : '<div>(no routes)</div>'); routes.forEach((r,i)=>{ const d = document.createElement('div'); d.className='ride'; const v = document.createElement('button'); v.textContent='View'; v.onclick=()=>{ if(!map){ ensureMap();} const latlngs = r.route.map(p=>[p.lat,p.lng]); const poly = L.polyline(latlngs,{color:'#06f'}).addTo(routeLayer); map.fitBounds(poly.getBounds(),{padding:[20,20]}); setTimeout(()=>{ routeLayer.removeLayer(poly); }, 8000); }; const e = document.createElement('button'); e.textContent='Export GPX'; e.onclick=()=>{ exportGPX(r,i); }; d.textContent = `Route ${i+1} — ${new Date(r.date).toLocaleString()}`; d.appendChild(v); d.appendChild(e); el.appendChild(d); }); }
+
+function exportGPX(routeObj, idx){ const points = routeObj.route; const header = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="RideTracker">\n<trk><name>Route ${idx+1}</name><trkseg>\n`; const pts = points.map(p=>`<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n'); const footer = `\n</trkseg></trk>\n</gpx>`; const gpx = header + pts + footer; const blob = new Blob([gpx],{type:'application/gpx+xml'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`route-${idx+1}.gpx`; a.click(); URL.revokeObjectURL(url); }
+
+showMapIfNeeded(); refreshRoutesList();
