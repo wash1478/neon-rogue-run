@@ -24,8 +24,9 @@ load();
 
 // map integration: show markers for rides with location and simple route drawing
 let map, layer, routeLayer, routeMarkers = [], addingRoute=false;
-function ensureMap(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); if(coords.length===0 && !addingRoute) return; document.getElementById('map').style.display='block'; if(!map){ map = L.map('map').setView(coords[0]||[0,0], 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); routeLayer = L.layerGroup().addTo(map); }
+function ensureMap(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); document.getElementById('map').style.display='block'; if(!map){ const start = coords.length? coords[0] : defaultCenter; map = L.map('map').setView(start, 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); routeLayer = L.layerGroup().addTo(map); }
   layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); if(coords.length) map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
+
 
 function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; routeMarkers=[]; routeLayer.clearLayers(); // enable freehand draw
   map.on('mousedown', startDraw); map.on('touchstart', startDraw);
@@ -38,6 +39,11 @@ let drawing=false;
 function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer); map.on('mousemove', drawMove); map.on('touchmove', drawMove); map.on('mouseup', endDraw); map.on('touchend', endDraw); }
 function drawMove(e){ if(!drawing) return; const latlng = e.latlng || (e.touches && map.mouseEventToLatLng(e.touches[0])); if(latlng){ const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); }}
 function endDraw(e){ drawing=false; map.off('mousemove', drawMove); map.off('touchmove', drawMove); map.off('mouseup', endDraw); map.off('touchend', endDraw); }
+
+// draw button toggles draw mode and locks zoom
+document.getElementById('draw-route').addEventListener('click', ()=>{
+  ensureMap(); if(!map) return; map.dragging.disable(); map.touchZoom.disable(); map.scrollWheelZoom.disable(); map.doubleClickZoom.disable(); startDraw(); document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block';
+});
 
 // default map center: Boulder, CO
 const defaultCenter = [40.014986, -105.270546];
