@@ -36,9 +36,16 @@ function finishRoute(){ addingRoute=false; map.off('mousedown', startDraw); map.
 function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); if(window.currentPolyline){ routeLayer.removeLayer(window.currentPolyline); window.currentPolyline=null } }
 
 let drawing=false;
-function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer); map.on('mousemove', drawMove); map.on('touchmove', drawMove); map.on('mouseup', endDraw); map.on('touchend', endDraw); }
-function drawMove(e){ if(!drawing) return; const latlng = e.latlng || (e.touches && map.mouseEventToLatLng(e.touches[0])); if(latlng){ const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); }}
-function endDraw(e){ drawing=false; map.off('mousemove', drawMove); map.off('touchmove', drawMove); map.off('mouseup', endDraw); map.off('touchend', endDraw); }
+function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer);
+  const container = map.getContainer();
+  function pointerMove(ev){ if(!drawing) return; const latlng = map.mouseEventToLatLng(ev); const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); }
+  function pointerUp(ev){ drawing=false; container.removeEventListener('pointermove', pointerMove); container.removeEventListener('pointerup', pointerUp); container.removeEventListener('pointercancel', pointerUp); }
+  container.addEventListener('pointermove', pointerMove);
+  container.addEventListener('pointerup', pointerUp);
+  container.addEventListener('pointercancel', pointerUp);
+}
+function drawMove(e){}
+function endDraw(e){}
 
 // draw button toggles draw mode and locks zoom
 document.getElementById('draw-route').addEventListener('click', ()=>{
