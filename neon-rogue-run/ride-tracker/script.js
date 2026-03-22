@@ -1,8 +1,20 @@
 const form=document.getElementById('ride-form'); const feed=document.getElementById('feed'); const anim=document.getElementById('animation');
 function load(){ const data=JSON.parse(localStorage.getItem('rides')||'[]'); feed.innerHTML=''; data.forEach(r=>{ const el=document.createElement('div'); el.className='ride'; el.textContent=`${r.date} ${r.time} — ${r.distance} km`; feed.appendChild(el); }); }
-function animateRide(){ const bike=document.createElement('div'); bike.className='bike'; bike.innerHTML='<svg viewBox="0 0 140 80" width="140" height="80"><g><ellipse cx="30" cy="60" rx="18" ry="8" fill="#333"/><ellipse cx="110" cy="60" rx="18" ry="8" fill="#333"/></g><g><rect x="20" y="30" width="100" height="24" rx="6" fill="#6c3"/><circle cx="40" cy="40" r="6" fill="#060"/></svg>';
+function animateRide(){ const bike=document.createElement('div'); bike.className='bike'; bike.innerHTML=`<svg viewBox="0 0 200 100" width="200" height="100" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- wheels -->
+    <circle cx="50" cy="70" r="18" fill="#222"/>
+    <circle cx="150" cy="70" r="18" fill="#222"/>
+    <!-- frame -->
+    <polyline points="60,60 95,45 135,60" stroke="#663300" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="95" y1="45" x2="95" y2="30" stroke="#663300" stroke-width="6"/>
+    <!-- rider (fun frog-ish) -->
+    <circle cx="105" cy="30" r="12" fill="#7fbf3f"/>
+    <rect x="90" y="36" width="30" height="10" rx="4" fill="#2b6"/>
+  </g>
+</svg>`;
  anim.appendChild(bike);
- const startX=-160; const endX=window.innerWidth+160; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; const id=setInterval(()=>{ x += 12; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 28); }
+ const startX=-220; const endX=window.innerWidth+220; let x=startX; bike.style.top='40%'; bike.style.left=x+'px'; const id=setInterval(()=>{ x += 14; bike.style.left = x+'px'; if(x> endX){ clearInterval(id); bike.remove(); } }, 26); }
 form.addEventListener('submit', e=>{ e.preventDefault(); const distance=document.getElementById('distance').value; const date=document.getElementById('date').value; const time=document.getElementById('time').value; const rides = JSON.parse(localStorage.getItem('rides')||'[]');
   // try to get geolocation
   if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ rides.unshift({distance,date,time,loc:pos.coords}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); showMapIfNeeded(); }, ()=>{ rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }); } else { rides.unshift({distance,date,time}); localStorage.setItem('rides', JSON.stringify(rides)); load(); animateRide(); form.reset(); }
