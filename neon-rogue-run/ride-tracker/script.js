@@ -27,11 +27,17 @@ let map, layer, routeLayer, routeMarkers = [], addingRoute=false;
 function ensureMap(){ const rides=JSON.parse(localStorage.getItem('rides')||'[]'); const coords = rides.filter(r=>r.loc).map(r=>[r.loc.latitude, r.loc.longitude]); if(coords.length===0 && !addingRoute) return; document.getElementById('map').style.display='block'; if(!map){ map = L.map('map').setView(coords[0]||[0,0], 13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map); layer = L.layerGroup().addTo(map); routeLayer = L.layerGroup().addTo(map); }
   layer.clearLayers(); coords.forEach(c=>{ L.marker(c).addTo(layer); }); if(coords.length) map.fitBounds(layer.getBounds(),{padding:[20,20]}); }
 
-function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; map.on('click', onMapClick); routeMarkers=[]; routeLayer.clearLayers(); }
-function finishRoute(){ addingRoute=false; map.off('click', onMapClick); const route = routeMarkers.map(m=>({lat:m.getLatLng().lat, lng:m.getLatLng().lng})); // save route
- const routes = JSON.parse(localStorage.getItem('routes')||'[]'); routes.unshift({route, date:new Date().toISOString()}); localStorage.setItem('routes', JSON.stringify(routes)); document.getElementById('finish-route').style.display='none'; document.getElementById('clear-route').style.display='none'; alert('Route saved'); }
-function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); }
-function onMapClick(e){ const mk = L.marker(e.latlng).addTo(routeLayer); routeMarkers.push(mk); const latlngs = routeMarkers.map(m=>m.getLatLng()); if(window.currentPolyline) routeLayer.removeLayer(window.currentPolyline); window.currentPolyline = L.polyline(latlngs,{color:'#f06'}).addTo(routeLayer); }
+function startAddingRoute(){ ensureMap(); addingRoute=true; document.getElementById('finish-route').style.display='inline-block'; document.getElementById('clear-route').style.display='inline-block'; routeMarkers=[]; routeLayer.clearLayers(); // enable freehand draw
+  map.on('mousedown', startDraw); map.on('touchstart', startDraw);
+}
+function finishRoute(){ addingRoute=false; map.off('mousedown', startDraw); map.off('touchstart', startDraw); map.off('mousemove', drawMove); map.off('touchmove', drawMove); map.off('mouseup', endDraw); map.off('touchend', endDraw);
+  const route = (window.currentPolyline ? window.currentPolyline.getLatLngs() : []).map(p=>({lat:p.lat,lng:p.lng})); if(route.length===0){ alert('No route drawn'); return;} const routes = JSON.parse(localStorage.getItem('routes')||'[]'); routes.unshift({route, date:new Date().toISOString()}); localStorage.setItem('routes', JSON.stringify(routes)); document.getElementById('finish-route').style.display='none'; document.getElementById('clear-route').style.display='none'; refreshRoutesList(); alert('Route saved'); }
+function clearRoute(){ routeMarkers=[]; routeLayer.clearLayers(); if(window.currentPolyline){ routeLayer.removeLayer(window.currentPolyline); window.currentPolyline=null } }
+
+let drawing=false;
+function startDraw(e){ drawing=true; routeLayer.clearLayers(); window.currentPolyline = L.polyline([], {color:'#f06'}).addTo(routeLayer); map.on('mousemove', drawMove); map.on('touchmove', drawMove); map.on('mouseup', endDraw); map.on('touchend', endDraw); }
+function drawMove(e){ if(!drawing) return; const latlng = e.latlng || (e.touches && map.mouseEventToLatLng(e.touches[0])); if(latlng){ const latlngs = window.currentPolyline.getLatLngs(); latlngs.push(latlng); window.currentPolyline.setLatLngs(latlngs); }}
+function endDraw(e){ drawing=false; map.off('mousemove', drawMove); map.off('touchmove', drawMove); map.off('mouseup', endDraw); map.off('touchend', endDraw); }
 
 // default map center: Boulder, CO
 const defaultCenter = [40.014986, -105.270546];
@@ -39,7 +45,11 @@ const defaultCenter = [40.014986, -105.270546];
 function showMapIfNeeded(){ ensureMap(); }
 
 // route manager: list saved routes and allow view/export
-function refreshRoutesList(){ const routes = JSON.parse(localStorage.getItem('routes')||'[]'); const el = document.getElementById('routes-list'); el.innerHTML = '<h3>Saved Routes</h3>' + (routes.length? '' : '<div>(no routes)</div>'); routes.forEach((r,i)=>{ const d = document.createElement('div'); d.className='ride'; const v = document.createElement('button'); v.textContent='View'; v.onclick=()=>{ if(!map){ ensureMap();} const latlngs = r.route.map(p=>[p.lat,p.lng]); const poly = L.polyline(latlngs,{color:'#06f'}).addTo(routeLayer); map.fitBounds(poly.getBounds(),{padding:[20,20]}); setTimeout(()=>{ routeLayer.removeLayer(poly); }, 8000); }; const e = document.createElement('button'); e.textContent='Export GPX'; e.onclick=()=>{ exportGPX(r,i); }; d.textContent = `Route ${i+1} — ${new Date(r.date).toLocaleString()}`; d.appendChild(v); d.appendChild(e); el.appendChild(d); }); }
+function refreshRoutesList(){ const routes = JSON.parse(localStorage.getItem('routes')||'[]'); const el = document.getElementById('routes-list'); const sel = document.getElementById('route-select'); sel.innerHTML = '<option value="">(none)</option>'; el.innerHTML = '<h3>Saved Routes</h3>' + (routes.length? '' : '<div>(no routes)</div>'); routes.forEach((r,i)=>{ const d = document.createElement('div'); d.className='ride'; const v = document.createElement('button'); v.textContent='View'; v.onclick=()=>{ if(!map){ ensureMap();} const latlngs = r.route.map(p=>[p.lat,p.lng]); const poly = L.polyline(latlngs,{color:'#06f'}).addTo(routeLayer); map.fitBounds(poly.getBounds(),{padding:[20,20]}); setTimeout(()=>{ routeLayer.removeLayer(poly); }, 8000); }; const e = document.createElement('button'); e.textContent='Export GPX'; e.onclick=()=>{ exportGPX(r,i); };
+    const del = document.createElement('button'); del.textContent='Delete'; del.onclick=()=>{ if(confirm('Delete route?')){ routes.splice(i,1); localStorage.setItem('routes', JSON.stringify(routes)); refreshRoutesList(); }};
+    sel.appendChild(new Option('Route '+(i+1), i));
+    d.textContent = `Route ${i+1} — ${new Date(r.date).toLocaleString()}`; d.appendChild(v); d.appendChild(e); d.appendChild(del); el.appendChild(d); }); }
+
 
 function exportGPX(routeObj, idx){ const points = routeObj.route; const header = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="RideTracker">\n<trk><name>Route ${idx+1}</name><trkseg>\n`; const pts = points.map(p=>`<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n'); const footer = `\n</trkseg></trk>\n</gpx>`; const gpx = header + pts + footer; const blob = new Blob([gpx],{type:'application/gpx+xml'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`route-${idx+1}.gpx`; a.click(); URL.revokeObjectURL(url); }
 
