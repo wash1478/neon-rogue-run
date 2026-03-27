@@ -19,6 +19,12 @@
     "exercised": true,
     "exercise_minutes": 20,
     "exercise_type": "Exercise",
-    "notes": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm"
+    "notes": "Dinner was pasta with beef  marinara.  Lungs feel a little tight. 5 on 1-10 scale 10 being good.  Mood 5.  Exercise: rode exercise bike for 20 minutes around 6 pm",
+    "exercise_entries": [
+      {
+        "type": "Exercise: rode exercise bike for",
+        "minutes": 20
+      }
+    ]
   }
 ]
