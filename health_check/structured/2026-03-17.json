@@ -1,15 +1,1 @@
-[
-  {
-    "timestamp": "2026-03-17T21:04:58.705453",
-    "prompts_sent": true,
-    "raw_responses": null,
-    "meal_text": "",
-    "lung_rating": null,
-    "mood_rating": null,
-    "exercised": false,
-    "exercise_minutes": null,
-    "exercise_type": null,
-    "notes": "",
-    "exercise_entries": []
-  }
-]
+[]

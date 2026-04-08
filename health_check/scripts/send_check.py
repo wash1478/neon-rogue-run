@@ -21,6 +21,9 @@ if not os.path.exists(TOKEN_PATH):
 with open(TOKEN_PATH,'r') as f:
     TOKEN = f.read().strip()
 
+DATA_DIR = os.path.join(WORKDIR,'data')
+STRUCT_DIR = os.path.join(WORKDIR,'structured')
+
 # guard: do not resend if we already sent recently today for this schedule
 fn_today = os.path.join(DATA_DIR, datetime.utcnow().strftime('%Y-%m-%d') + '.json')
 if os.path.exists(fn_today):
